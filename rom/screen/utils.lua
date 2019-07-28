@@ -77,8 +77,6 @@ end
 function writeMonitorLinesC(monitor, lines)
     monitor.setCursorPos(1,1)
     local disp_length, disp_height = monitor.getSize()
-    local scale = monitor.getTextScale()
-    disp_length = disp_length / scale
 
     local line_idx = 1
     for i=1,#lines do
