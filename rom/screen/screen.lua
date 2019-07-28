@@ -23,7 +23,7 @@ local function getConfig()
         },
         monitorHeight = 5,
         monitorScale = 2,
-        speaker {
+        speaker = {
             id = "speaker_0",
         },
         shell = shell
