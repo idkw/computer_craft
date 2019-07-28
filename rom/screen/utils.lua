@@ -110,3 +110,13 @@ function readLines(filePath)
     file.close()
     return lines
 end
+
+function splitString(str, delimiter)
+    local split = {}
+    local idx = 1
+    for part in str.gmatch(str, "[^"..delimiter.."]+") do
+        split[idx] = part
+        idx = idx + 1
+    end
+    return split
+end

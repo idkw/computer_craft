@@ -53,6 +53,10 @@ local function getFunctions()
         [2] = {
             desc = "Ecrire sur le moniteur",
             fn = functions.writeMonitor
+        },
+        [3] = {
+            desc = "Jouer des sons",
+            fn = functions.playSounds
         }
     }
 end
