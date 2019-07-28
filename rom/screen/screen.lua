@@ -69,6 +69,7 @@ end
 local function selectFunction(functions)
     utils.printC("&aVeuillez choisir une action et appuyer sur ENTREE:")
     printFunctions(functions)
+    term.clearLine()
     local userInput = read()
     local index = tonumber(userInput)
     if index == nil then

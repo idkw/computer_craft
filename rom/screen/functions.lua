@@ -23,35 +23,17 @@ function clearMonitor(config)
 end
 
 function writeMonitor(config)
-    shell = config.shell
-    monitorHeight = config.monitor.height
-    monitorfilePath =  config.monitor.contentFile
-    p = wrapMonitor(config)
+    -- edit monitor content file
+    local filePath = config.monitor.contentFile
+    config.shell.run("edit " .. filePath)
+    local lines = utils.readLines(filePath)
 
-    utils.printC("Ouverture de l'éditeur de texte")
-    utils.printC("Enregistrer &a:&f CTRL > SAVE > ENTREE")
-    utils.printC("Quitter     &a:&f CTRL > QUIT > ENTREE")
-    utils.pressAnyKey()
-    utils.clearTerm()
-
-    shell.run("edit " .. monitorfilePath)
-
+    -- display content on monitor
+    local p = wrapMonitor(config)
     p.clear()
     p.setTextScale(config.monitor.scale)
+    utils.writeMonitorLinesC(p, lines)
 
-    file = fs.open(monitorfilePath, "r")
-    line_idx = 1
-    line = 0
-    repeat
-        line = file.readLine()
-        if line ~= nil then
-            p.setCursorPos(1,line_idx)
-            utils.writeMonitorC(p, line)
-        end
-        line_idx = line_idx + 1
-    until line == nil
-    file.close()
-
+    utils.clearTerm()
     utils.printC("&aLe fichier est maintenant affiché sur le moniteur")
-
 end
