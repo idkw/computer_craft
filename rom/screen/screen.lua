@@ -39,7 +39,7 @@ local function getConfig()
 
     config.shell = shell
 
-    return defaultConfig
+    return config
 end
 
 local function getFunctions()
