@@ -1,4 +1,6 @@
-os.loadAPI("/rom/screen/utils.lua")
+function __init(current_dir)
+    os.loadAPI(current_dir .. "/utils.lua")
+end
 
 function shutdown()
     utils.writeC("&8Arrêt en cours")

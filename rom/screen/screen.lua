@@ -1,5 +1,7 @@
+current_dir = "/" .. shell.getRunningProgram():gsub("\/screen\.lua","/")
 os.loadAPI("/rom/screen/functions.lua")
 os.loadAPI("/rom/screen/utils.lua")
+functions.__init(current_dir)
 
 local function getConfig()
     return {
@@ -70,5 +72,4 @@ local function main()
 end
 
 -- Begin script
-
 main()
