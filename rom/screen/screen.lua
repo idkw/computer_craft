@@ -5,34 +5,40 @@ functions.__init(current_dir)
 
 local function getConfig()
     filePath = "/disk/screen/config.cfg"
+
+    config = nil
+
     -- Read config from file if it exists
     if fs.exists(filePath) then
         local file = fs.open(filePath,"r")
         local cfg = file.readAll()
         file.close()
-        return textutils.unserialize(cfg)
+        config = textutils.unserialize(cfg)
+    else
+        -- Save default config to file and return it
+        local defaultConfig = {
+            monitor = {
+                id = "monitor_0",
+                height = 5,
+                scale = 2,
+                contentFile = "/disk/screen/monitor.txt"
+            },
+            monitorHeight = 5,
+            monitorScale = 2,
+            speaker = {
+                id = "speaker_0",
+            }
+        }
+
+        local file = fs.open(filePath,"w")
+        file.write(textutils.serialize(defaultConfig))
+        file.flush()
+        file.close()
+        config = defaultConfig
     end
 
-    -- Save default config to file and return it
-    local defaultConfig = {
-        monitor = {
-            id = "monitor_0",
-            height = 5,
-            scale = 2,
-            contentFile = "/disk/screen/monitor.txt"
-        },
-        monitorHeight = 5,
-        monitorScale = 2,
-        speaker = {
-            id = "speaker_0",
-        },
-        shell = shell
-    }
+    config.shell = shell
 
-    local file = fs.open(filePath,"w")
-    file.write(textutils.serialize(defaultConfig))
-    file.flush()
-    file.close()
     return defaultConfig
 end
 
