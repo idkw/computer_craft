@@ -31,6 +31,7 @@ local function getConfig()
 
     local file = fs.open(filePath,"w")
     file.write(textutils.serialize(defaultConfig))
+    file.flush()
     file.close()
     return defaultConfig
 end
@@ -72,13 +73,14 @@ end
 
 local function main()
     functions = getFunctions()
+    config = getConfig()
     while(true) do
         utils.clearTerm()
         selected_function = selectFunction(functions)
 
         if(selected_function ~= nil) then
             utils.clearTerm()
-            selected_function.fn(getConfig())
+            selected_function.fn(config)
         else
             utils.printC("&4Cette action n'existe pas.")
         end
