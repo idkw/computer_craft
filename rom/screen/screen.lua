@@ -1,22 +1,53 @@
 current_dir = "/" .. shell.getRunningProgram():gsub("\/screen\.lua","/")
-os.loadAPI("/rom/screen/functions.lua")
-os.loadAPI("/rom/screen/utils.lua")
+os.loadAPI(current_dir .. "/functions.lua")
+os.loadAPI(current_dir .. "/utils.lua")
 functions.__init(current_dir)
 
+local function loadConfig()
+    cfgFilePath = "/disk/screen/config.cfg"
+    if fs.exists(cfgFilePath) then
+        local cfgFile = fs.open(cfgFilePath,"r")
+        local cfg = file.readAll()
+        return textutils.unserialize(data)
+    end
+
+
+
+
+    file.close()
+
+end
+
 local function getConfig()
-    return {
+    filePath = "/disk/screen/config.cfg"
+    -- Read config from file if it exists
+    if fs.exists(filePath) then
+        local file = fs.open(filePath,"r")
+        local cfg = file.readAll()
+        file.close()
+        return textutils.unserialize(cfg)
+    end
+
+    -- Save default config to file and return it
+    local defaultConfig = {
         monitor = {
             id = "monitor_0",
             height = 5,
             scale = 2,
             contentFile = "/disk/screen/monitor.txt"
         },
-        monitorId = "monitor_0",
         monitorHeight = 5,
         monitorScale = 2,
-        speakerId = "speaker_0",
+        speaker {
+            id = "speaker_0",
+        },
         shell = shell
     }
+
+    local file = fs.open(filePath,"w")
+    file.write(textutils.serialize(defaultConfig))
+    file.close()
+    return defaultConfig
 end
 
 local function getFunctions()
