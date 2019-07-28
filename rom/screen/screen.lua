@@ -23,8 +23,6 @@ local function getConfig()
                 scale = 2,
                 contentFile = "/disk/screen/monitor.txt"
             },
-            monitorHeight = 5,
-            monitorScale = 2,
             speaker = {
                 id = "speaker_0",
             }
