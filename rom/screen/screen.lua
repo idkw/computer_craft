@@ -3,21 +3,6 @@ os.loadAPI(current_dir .. "/functions.lua")
 os.loadAPI(current_dir .. "/utils.lua")
 functions.__init(current_dir)
 
-local function loadConfig()
-    cfgFilePath = "/disk/screen/config.cfg"
-    if fs.exists(cfgFilePath) then
-        local cfgFile = fs.open(cfgFilePath,"r")
-        local cfg = file.readAll()
-        return textutils.unserialize(data)
-    end
-
-
-
-
-    file.close()
-
-end
-
 local function getConfig()
     filePath = "/disk/screen/config.cfg"
     -- Read config from file if it exists
