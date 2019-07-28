@@ -37,6 +37,7 @@ function writeMonitor(config)
     shell.run("edit " .. monitorfilePath)
 
     p.clear()
+    p.setTextScale(config.monitor.scale)
 
     file = fs.open(monitorfilePath, "r")
     line_idx = 1

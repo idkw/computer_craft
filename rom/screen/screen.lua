@@ -6,7 +6,7 @@ functions.__init(current_dir)
 local function getConfig()
     filePath = "/disk/screen/config.cfg"
 
-    config = nil
+    local config = nil
 
     -- Read config from file if it exists
     if fs.exists(filePath) then
@@ -37,7 +37,7 @@ local function getConfig()
         config = defaultConfig
     end
 
-    config.shell = shell
+    config["shell"] = shell
 
     return config
 end
