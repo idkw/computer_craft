@@ -43,7 +43,7 @@ function writeMonitor(config)
         line = file.readLine()
         if line ~= nil then
             p.setCursorPos(1,line_idx)
-            p.write(line)
+            utils.writeMonitorC(p, line)
         end
         line_idx = line_idx + 1
     until line == nil

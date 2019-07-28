@@ -29,8 +29,8 @@ local colorTable = {
     ["f"] = colors.white
 }
 
-function writeC(...)
 
+local function splitInColors(...)
     local s = "&f"
     for k, v in ipairs(arg) do
         s = s .. v
@@ -44,14 +44,31 @@ function writeC(...)
         lastcolor, lastpos = clr, pos
     end
 
+    return fields
+end
+
+-- Write on console in color
+function writeC(...)
+    local fields = splitInColors(...)
+
     for i = 2, #fields do
-        color = colorTable[fields[i][2]]
-        term.setTextColor(color)
+        term.setTextColor(colorTable[fields[i][2]])
         io.write(fields[i][1])
     end
 end
 
+-- Write on console in color then add a line break
 function printC(...)
     writeC(...)
     io.write("\n")
+end
+
+-- Write on a monitor in color
+function writeMonitorC(monitor, ...)
+    local fields = splitInColors(...)
+
+    for i = 2, #fields do
+        monitor.setTextColour(colorTable[fields[i][2]])
+        monitor.write(fields[i][1])
+    end
 end
