@@ -26,7 +26,7 @@ function getNearbyEntitiesWithName(name)
     for k, v in pairs(neural.sense()) do
         if v.name == name then
             count = count + 1
-            entities[k] = v
+            entities[v.id] = v
         end
     end
     return {
