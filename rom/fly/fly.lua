@@ -49,7 +49,7 @@ local function getNearbyEntitiesWithName(name)
     local entities = {}
     local count = 0
     for k, v in pairs(neural.sense()) do
-        if v.name == name then
+        if string.match(v.name:lower(), "[a-zA-Z]*(" .. name .. ")[a-zA-Z]*") then
             count = count + 1
             entities[k] = v
         end
@@ -106,7 +106,7 @@ end
 local function scanCreepers()
     while true do
         os.sleep(0.5)
-        creepers = getNearbyEntitiesWithName("Creeper")
+        creepers = getNearbyEntitiesWithName("creeper")
         meta = neural.getMetaOwner()
         updateCanvas({
             creepers = creepers

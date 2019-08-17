@@ -85,7 +85,7 @@ local function doUpdateScript(name, cfg, force)
 
     if cfg.dependencies ~= nil then
         print("Updating dependencies")
-        for k,v in pairs(cfg.dependencies) do
+        for k, v in pairs(cfg.dependencies) do
             forceUpdateScript(k, force)
         end
     end
@@ -140,20 +140,44 @@ function setStartupScript(name)
     local path = "/startup.lua"
     removeIfExists(path)
     f = fs.open(path, "w")
-    f.write("os.loadAPI(\"" .. config.cfgPath .. "update.lua\")\n")
-    f.write("update.setShell(shell)\n")
-    f.write("update.updateScript(\"update\")\n")
-    f.write("shell.run(\"" .. buildEntrypointScriptPath(name) .. "\")\n")
+    f.write("os.loadAPI(\"" .. config.cfgPath .. "update.lua\")\n" ..
+            "local s = shell\n" ..
+            "update.setShell(s)\n" ..
+            "update.updateScript(\"update\")\n" ..
+
+            "local function rebootOnCrash(fn, rebootDelay)\n" ..
+            "    ok, err = pcall(fn)\n" ..
+            "    if not ok then\n" ..
+            "        print(err)\n" ..
+            "        print(\"Program [" .. name .. "] has crashed. Rebooting in [\"..rebootDelay..\"] seconds...\")\n" ..
+            "        os.sleep(rebootDelay)\n" ..
+            "        update.setShell(s)\n" ..
+            "        update.updateScript(\"" .. name .. "\")\n" ..
+            "        os.reboot()\n" ..
+            "    end\n" ..
+            "end\n" ..
+
+            "local function run()\n" ..
+            "   dofile(\"" .. buildEntrypointScriptPath(name) .. "\")\n" ..
+            "end\n" ..
+
+            "rebootOnCrash(run,30)"
+    )
     f.close()
     print("Startup script set to [" .. name .. "]")
 end
 
-function getScriptsNames()
+function getScriptsNames(onlyApps)
+    if onlyApps == nil then
+        onlyApps = true
+    end
+
     local cfg = getVersionsCfg()
     local names = {}
     local index = 1
     for k, v in pairs(cfg) do
-        if k ~= "update" then
+        local type = v.type
+        if not onlyApps or type == "app" then
             names[index] = k
             index = index + 1
         end
